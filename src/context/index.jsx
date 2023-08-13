@@ -5,8 +5,10 @@ export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
   const [count, setCount] = useState(0);
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
+  const openDetailProduct = () => setIsProductDetailOpen(true);
+  const closeDetailProduct = () => setIsProductDetailOpen(false);
   const [categories, setCategories] = useState([]);
-  const listCategories = []
 
   useEffect(() => {
     fetch('https://dummyjson.com/products/categories/')
@@ -22,12 +24,14 @@ const CartProvider = ({ children }) => {
         });
       })
   }, [])
-  console.log(categories)
 
   return (
     <CartContext.Provider value={{
       count,
       setCount,
+      openDetailProduct,
+      closeDetailProduct,
+      isProductDetailOpen,
       categories
     }}>
       {children}

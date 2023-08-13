@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FaToolbox } from 'react-icons/fa'
 import { CartContext } from '../../context'
+import { AiOutlineShoppingCart } from 'react-icons/ai'
 
 const menuItemsList = [
   { id: 1, label: 'My Orders', to: '/orders' },
@@ -74,7 +75,8 @@ const Navbar = () => {
             {link.label}
           </NavLink>
         ))}
-        <li>
+        <li className='flex items-center justify-between w-8'>
+          <AiOutlineShoppingCart className='text-xl' />
           {count}
         </li>
       </ul>

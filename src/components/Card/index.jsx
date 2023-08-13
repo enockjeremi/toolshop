@@ -3,9 +3,10 @@ import { BiPlus } from 'react-icons/bi'
 import { CartContext } from '../../context'
 
 const Card = ({ data }) => {
-  const { count, setCount } = useContext(CartContext);
+  const { count, setCount, openDetailProduct } = useContext(CartContext);
+
   return (
-    <div className='bg-white cursor-pointer w-56 h-60 border border-black/50 border-dashed p-2 rounded-lg'>
+    <div onClick={openDetailProduct} className='bg-white cursor-pointer w-56 h-60 border border-black/50 border-dashed p-2 rounded-lg'>
       <figure className='relative mb-4 w-full h-4/5'>
         <img className='w-full h-full object-cover rounded-lg' src={data.images[0]} alt={data.title} />
         <div className='absolute bottom-2 left-2 rounded-lg bg-white/60 text-black text-sm px-2'>{data.category}</div>

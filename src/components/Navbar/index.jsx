@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FaToolbox } from 'react-icons/fa'
 import { CartContext } from '../../context'
@@ -10,18 +10,14 @@ const menuItemsList = [
   { id: 3, label: 'Sign In', to: '/sing-in' },
 ]
 
-const menuItemsCategories = [
-  { id: 1, label: 'Electric', to: '/electric' },
-  { id: 2, label: 'Hydraulic', to: '/hydraulic' },
-  { id: 3, label: 'Workshop', to: '/workshop' },
-  { id: 4, label: 'Others', to: '/others' },
-]
-
 const Navbar = () => {
-  const { count, categories } = useContext(CartContext)
+  const { count, categories, openCheckOutSideMenu, cartProducts } = useContext(CartContext)
   const [dropdown, setDropdown] = useState(false);
   const activeStyles = 'border-b-2 border-black pb-0.5 duration-100';
 
+  const checkOutMenu = () => {
+    openCheckOutSideMenu();
+  }
   const activeTitleStyle = (isActive) => {
     return `
       flex justify-between items-center
@@ -75,10 +71,10 @@ const Navbar = () => {
             {link.label}
           </NavLink>
         ))}
-        <li className='flex items-center justify-between w-8'>
+        <button onClick={() => checkOutMenu()} className='flex items-center justify-between w-8'>
           <AiOutlineShoppingCart className='text-xl' />
-          {count}
-        </li>
+          {cartProducts.length}
+        </button>
       </ul>
     </nav >
   )

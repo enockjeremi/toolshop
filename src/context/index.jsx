@@ -4,11 +4,33 @@ import { createContext } from 'react'
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-  const [count, setCount] = useState(0);
-  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
-  const openDetailProduct = () => setIsProductDetailOpen(true);
-  const closeDetailProduct = () => setIsProductDetailOpen(false);
+  //Categories menu
   const [categories, setCategories] = useState([]);
+  //Product Detail
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
+  //Open & Close
+  const openDetailProduct = () => {
+    setIsProductDetailOpen(true);
+    setisCheckOutSideMenuetailOpen(false)
+  }
+  const closeDetailProduct = () => setIsProductDetailOpen(false);
+  //Product to Show
+  const [productToShow, setProductToShow] = useState({
+    title: "",
+    price: "",
+    description: "",
+    images: [],
+  })
+  const [cartProducts, setCartProducts] = useState([])
+
+  //Product Detail
+  const [isCheckOutSideMenuOpen, setisCheckOutSideMenuetailOpen] = useState(false)
+  //Open & Close
+  const openCheckOutSideMenu = () => {
+    setisCheckOutSideMenuetailOpen(true);
+    setIsProductDetailOpen(false);
+  }
+  const closeCheckOutSideMenu = () => setisCheckOutSideMenuetailOpen(false);
 
   useEffect(() => {
     fetch('https://dummyjson.com/products/categories/')
@@ -24,15 +46,19 @@ const CartProvider = ({ children }) => {
         });
       })
   }, [])
-
   return (
     <CartContext.Provider value={{
-      count,
-      setCount,
+      categories,
       openDetailProduct,
       closeDetailProduct,
       isProductDetailOpen,
-      categories
+      cartProducts,
+      setCartProducts,
+      productToShow,
+      setProductToShow,
+      isCheckOutSideMenuOpen,
+      openCheckOutSideMenu,
+      closeCheckOutSideMenu
     }}>
       {children}
     </CartContext.Provider>

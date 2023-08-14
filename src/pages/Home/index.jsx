@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Card from '../../components/Card'
+import { Card } from '../../components/Card'
 import ProductDetail from '../../components/ProductDetail';
 import { CartContext } from '../../context';
 
@@ -12,7 +12,6 @@ const Home = () => {
       .then(response => response.json())
       .then(data => setItems(data.products))
   }, [])
-  console.log(isProductDetailOpen)
   return (
     <>
       <div className='my-10'>Home</div>

@@ -8,6 +8,7 @@ import Order from '../Order'
 import NotFound from '../NotFound'
 import SingIn from '../SignIn'
 import Navbar from '../../components/Navbar';
+import CheckoutSideMenu from '../../components/CheckoutSideMenu';
 
 
 
@@ -29,6 +30,8 @@ function App() {
       <BrowserRouter>
         <AppRoutes />
         <Navbar />
+        <CheckoutSideMenu />
+
       </BrowserRouter>
     </CartProvider>
   )

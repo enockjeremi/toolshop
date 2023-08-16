@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { createContext } from 'react'
+import { totalSum } from '../utils';
 
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
+  //Show items
+  const [items, setItems] = useState(null);
+  // Filter items
+  const [filterItems, setFilterItems] = useState(null);
+
+  //Seach by Title
+  const [searchByTitle, setSearchByTitle] = useState('');
+  //search by Category
+  const [searchByCategory, setSearchByCategory] = useState('');
+
   //Categories menu
   const [categories, setCategories] = useState([]);
   //Product Detail
@@ -32,7 +43,43 @@ const CartProvider = ({ children }) => {
   }
   const closeCheckOutSideMenu = () => setisCheckOutSideMenuetailOpen(false);
 
+  //Total Price
+  const prices = cartProducts.map((price) => price.price)
+  const totalPrice = totalSum(prices);
+
+  //CheckOut Orders
+  const [order, setOrder] = useState([{
+    date: '',
+    products: [],
+    totalProducts: 0,
+    totalPrice: 0
+  }]);
+
+  const filteredItemsByTitle = (items, searchBy) => {
+    return items?.filter(items => items.title.toLowerCase().includes(searchBy.toLowerCase()))
+  }
+
+  const filteredItemsByCategory = (items, searchBy) => {
+    return items?.filter(items => items.category.toLowerCase().includes(searchBy.toLowerCase()))
+  }
+
+  const filterBy = (type, items, searchByTitle, searchByCategory) => {
+    if (type === 'BY_TITLE') {
+      return filteredItemsByTitle(items, searchByTitle)
+    } else if (type === 'BY_CATEGORY') {
+      return filteredItemsByCategory(items, searchByCategory)
+    } else if (type === 'BY_CATEGORY_AND_TITLE') {
+      return filteredItemsByCategory(items, searchByCategory).filter(items => items.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+    } else if (!type){
+      return items;
+    }
+  }
+
   useEffect(() => {
+    fetch('https://dummyjson.com/products/')
+      .then(response => response.json())
+      .then(data => setItems(data.products))
+
     fetch('https://dummyjson.com/products/categories/')
       .then(response => response.json())
       .then(data => {
@@ -46,8 +93,25 @@ const CartProvider = ({ children }) => {
         });
       })
   }, [])
+
+  useEffect(() => {
+    if (searchByTitle && !searchByCategory) setFilterItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && searchByCategory) setFilterItems(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory))
+
+    if (searchByTitle && searchByCategory) setFilterItems(filterBy('BY_CATEGORY_AND_TITLE', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && !searchByCategory) setFilterItems(filterBy(null, items, searchByTitle, searchByCategory))
+
+
+  }, [items, searchByTitle, searchByCategory]);
+
+
   return (
     <CartContext.Provider value={{
+      items,
+      filterItems,
+      searchByTitle,
+      setSearchByTitle,
+      setSearchByCategory,
       categories,
       openDetailProduct,
       closeDetailProduct,
@@ -58,7 +122,10 @@ const CartProvider = ({ children }) => {
       setProductToShow,
       isCheckOutSideMenuOpen,
       openCheckOutSideMenu,
-      closeCheckOutSideMenu
+      closeCheckOutSideMenu,
+      totalPrice,
+      order,
+      setOrder,
     }}>
       {children}
     </CartContext.Provider>

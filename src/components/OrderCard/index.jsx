@@ -3,6 +3,13 @@ import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 const OrderCard = ({ data, handleDelete }) => {
 
+  const renderIconDelete = () => {
+    if(handleDelete) {
+      return <AiOutlineCloseCircle onClick={() => handleDelete(data.id)} className='text-lg hover:text-red-900 cursor-pointer' />
+    } else {
+     return null
+    }
+  }
   return (
     <div className='p-2'>
       <div className='flex flex-col justify-between border p-1 rounded-lg border-dashed border-black'>
@@ -14,8 +21,7 @@ const OrderCard = ({ data, handleDelete }) => {
         </div>
         <div className='flex justify-between items-center px-2 py-0.5 mt-2 bg-green-500 rounded-lg text-white'>
           <p className='text-md font-medium'>${data.price}</p>
-
-          <AiOutlineCloseCircle onClick={() => handleDelete(data.id)} className='text-lg hover:text-red-900 cursor-pointer' />
+          {renderIconDelete()}
         </div>
       </div>
     </div>

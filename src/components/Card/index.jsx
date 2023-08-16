@@ -2,9 +2,10 @@ import React, { useContext } from 'react'
 import { BiPlus } from 'react-icons/bi'
 import { CartContext } from '../../context'
 import { AiOutlineCheck } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 export const Card = ({ data }) => {
-  const { openDetailProduct, setProductToShow, setCartProducts, cartProducts, closeDetailProduct, openCheckOutSideMenu, closeCheckOutSideMenu } = useContext(CartContext);
+  const { openDetailProduct, setProductToShow, setCartProducts, cartProducts, openCheckOutSideMenu, setSearchByCategory } = useContext(CartContext);
   const showDetail = (prductDetail) => {
     openDetailProduct();
     setProductToShow(prductDetail);
@@ -41,7 +42,14 @@ export const Card = ({ data }) => {
     <div onClick={() => showDetail(data)} className='bg-white cursor-pointer w-56 h-60 border border-black/50 border-dashed p-2 rounded-lg'>
       <figure className='relative mb-4 w-full h-4/5'>
         <img className='w-full h-full object-cover rounded-lg' src={data.images[0]} alt={data.title} />
-        <div className='absolute bottom-2 left-2 rounded-lg bg-white/60 text-black text-sm px-2'>{data.category}</div>
+        <Link to={`/${data.category}`} onClick={(event) => {
+          event.stopPropagation();
+          setSearchByCategory(data.category)
+        }} >
+          <div className='absolute bottom-2 hover:bg-black hover:text-white duration-150 left-2 rounded-lg bg-white/60 text-black text-sm px-2'>
+            {data.category}
+          </div>
+        </Link>
         {renderIcon(data.id)}
         <p className='flex justify-between items-center mt-4'>
           <span className='text-sm font-light'>{data.title}</span>

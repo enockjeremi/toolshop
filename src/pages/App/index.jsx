@@ -15,9 +15,12 @@ import CheckoutSideMenu from '../../components/CheckoutSideMenu';
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: '/', element: <Home /> },
+    { path: '/:category', element: <Home /> },
     { path: '/account', element: <Account /> },
     { path: '/order', element: <Order /> },
     { path: '/orders', element: <Orders /> },
+    { path: '/orders/last', element: <Order /> },
+    { path: '/orders/:id', element: <Order /> },
     { path: '/sing-in', element: <SingIn /> },
     { path: '/*', element: <NotFound /> },
   ]);
@@ -31,7 +34,6 @@ function App() {
         <AppRoutes />
         <Navbar />
         <CheckoutSideMenu />
-
       </BrowserRouter>
     </CartProvider>
   )

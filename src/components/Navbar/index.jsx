@@ -11,11 +11,13 @@ const menuItemsList = [
 ]
 
 const Navbar = () => {
-  const { count, categories, openCheckOutSideMenu, cartProducts } = useContext(CartContext)
+  const { categories, openCheckOutSideMenu, cartProducts, setSearchByCategory, setSearchByTitle } = useContext(CartContext)
   const [dropdown, setDropdown] = useState(false);
   const activeStyles = 'border-b-2 border-black pb-0.5 duration-100';
 
   const checkOutMenu = () => {
+    setSearchByCategory(null);
+    setSearchByTitle(null)
     openCheckOutSideMenu();
   }
   const activeTitleStyle = (isActive) => {
@@ -32,7 +34,7 @@ const Navbar = () => {
     <nav className='flex bg-white/80  justify-between items-center fixed top-0 z-10 w-full py-5 px-8 text-sm font-semibold'>
       <ul className='flex items-center gap-4'>
         <li>
-          <NavLink to="/" className={({ isActive }) => activeTitleStyle(isActive)}>
+          <NavLink to="/" onClick={() => {setSearchByCategory(null); setSearchByTitle(null)} } className={({ isActive }) => activeTitleStyle(isActive)}>
             <FaToolbox className='mb-2' />
             <p className='text-2xl mb-2'>
               Toolshop
@@ -54,7 +56,7 @@ const Navbar = () => {
             <ul className='grid grid-cols-4 rounded-lg bg-white border border-black/30 gap-4 w-full p-2'>
               {categories.map(({ id, to, label }) => (
                 <li key={'category-' + id} className='flex justify-center p-2'>
-                  <NavLink to={to} className={({ isActive }) => isActive ? 'underline' : undefined}>
+                  <NavLink to={to} onClick={() => setSearchByCategory(label)} className={({ isActive }) => isActive ? 'underline' : undefined}>
                     <p className='first-letter:uppercase'>{label?.replace('-', ' ')}</p>
                   </NavLink>
                 </li>
